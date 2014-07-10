@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+
+  <title>KnockoutJS</title>
+
+  <!-- Required stylesheet -->
+  <link rel="stylesheet" media="screen" href="core/deck.core.css">
+
+  <!-- Extension CSS files go here. Remove or add as needed. -->
+  <link rel="stylesheet" media="screen" href="extensions/goto/deck.goto.css">
+  <link rel="stylesheet" media="screen" href="extensions/menu/deck.menu.css">
+  <link rel="stylesheet" media="screen" href="extensions/navigation/deck.navigation.css">
+  <link rel="stylesheet" media="screen" href="extensions/status/deck.status.css">
+  <link rel="stylesheet" media="screen" href="extensions/scale/deck.scale.css">
+
+  <!-- Rainbow stylesheet -->
+  <link rel="stylesheet" media="screen" href="rainbow/sunburst.css">
+
+  <!-- Style theme. More available in /themes/style/ or create your own. -->
+  <link rel="stylesheet" media="screen" href="themes/style/adam12.css">
+
+  <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+  <link rel="stylesheet" media="screen" href="themes/transition/horizontal-slide.css">
+
+  <!-- Basic black and white print styles -->
+  <link rel="stylesheet" media="print" href="core/print.css">
+
+  <!-- Required Modernizr file -->
+  <script src="modernizr.custom.js"></script>
+</head>
+<body>
+  <!-- This will setup our embedded interactive code samples -->
+  <div id="code-setup" style="display: none">
+    &lt;link rel="stylesheet" href="themes/style/iframe.css"&gt;
+    &lt;script src="jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="knockout-3.1.0.js"&gt;&lt;/script&gt;
+  </div>
+
+  <div class="deck-container">
+    <!-- Begin slides. Just make elements with a class of slide. -->
+    <section class="slide">
+      <h1>
+        <img src="ko-logo.png">
+      </h1>
+    </section>
+
+    <section class="slide">
+      <h2>What is Knockout</h2>
+
+      <p class="slide">
+        A JavaScript library that helps you create rich, maintainable, and responsive
+        user interfaces. Changes made to observed objects are reflected back to other
+        objects that depend on them. The declarative bindings help to eliminate
+        <strong>jQuery spaghetti!</strong>
+      </p>
+
+      <p class="slide">Some key features</p>
+      <ul>
+        <li class="slide">Elegant dependency tracking</li>
+        <li class="slide">Declarative bindings</li>
+        <li class="slide"><strong>MVVM</strong> pattern structure</li>
+        <li class="slide">MIT licensed</li>
+        <li class="slide">Pure JavaScript - no external dependencies</li>
+        <li class="slide">Compact - around 13kb once gzipped</li>
+        <li class="slide">Active code base</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>What is MVVM</h2>
+
+      <p class="slide">
+        The <strong>Model View ViewModel</strong> pattern is used to facilitate a
+        clear separation of the graphical user interface (ie. markup) from the development
+        of the business logic or back end logic known as the <em>data model</em>.
+      </p>
+
+      <p class="slide">
+        <strong>Model:</strong> a data access layer that contains the content
+      </p>
+
+      <p class="slide">
+        <strong>View:</strong> the markup necessary to display content, controls, etc
+      </p>
+
+      <p class="slide">
+        <strong>View model:</strong> an abstraction of the view that serves in mediating
+        between the view and the model. Exposes public properties and commands. Passes
+        commands from the view to the model.
+      </p>
+
+      <p class="slide">
+        Read the Wikipedia article for more information! Too much to cover here.
+      </p>
+    </section>
+
+    <section class="slide">
+      <h2>Kinda? Similar Libraries</h2>
+
+      <div class="slide">
+        <h3>Frameworks</h3>
+        <ul>
+          <li>Ember (MVC)</li>
+          <li>Angular (MVC)</li>
+          <li>Batman (MVC)</li>
+        </ul>
+      </div>
+
+      <div class="slide">
+        <h3>Templating (View only)</h3>
+        <ul>
+          <li>Handlebars</li>
+          <li>ReactJS <strong>HOT!</strong></li>
+          <li>Rivets</li>
+          <li>Backbone Views</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Observables</h2>
+
+      <ul>
+        <li class="slide">Act as Getters and Setters</li>
+        <li class="slide">Notify subscribers about changes</li>
+        <li class="slide">Automatically detect dependencies</li>
+        <li class="slide">Accept an initial value as an argument</li>
+        <li class="slide">Not <em>dirty tracking</em> based (ala AngularJS)</li>
+      </ul>
+
+      <div class="slide">
+        <pre><code data-language="javascript">var personModel = {
+  name: ko.observable('Adam'),      // Initialized with a value
+  favouriteDrink: ko.observable(),
+};
+
+// Get value
+personModel.name();
+
+// Set value
+personModel.favouriteDrink('Beer');</code></pre>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Observable Arrays</h2>
+
+      <ul>
+        <li class="slide">Operate on a <em>collection of things</em></li>
+        <li class="slide">Only track array contents, not state of <em>things</em></li>
+        <li class="slide">Can contain plain old JavaScript objects or KO Observables</li>
+        <li class="slide">
+          Support many JavaScript array functions you are already familiar with:
+          indexOf, slice, pop, push, unshift, shift, reverse, sort, splice
+        </li>
+      </ul>
+
+      <div class="slide">
+        <pre><code data-language="javascript">// Define our viewModel
+var viewModel = {
+  // Create our fruits property with two fruits pre-defined
+  fruits: ko.observableArray(["Apples", "Pears"]);
+};
+
+// Append another fruit to fruits
+viewModel.fruits.push("Bananas");
+
+// Give me some Apples
+viewModel.fruits.shift();</code></pre>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Declarative Bindings</h2>
+
+      <p>
+        A simple and obvious way to connect parts of your UI to your data model.
+      </p>
+
+      <pre><code data-language="html">&lt;span data-bind="text: firstName"&gt;&lt;/span&gt;
+
+&lt;input data-bind="value: firstName"&gt;
+
+&lt;select data-bind="options: availableCountries, value: birthCountry"&gt;&lt;/select&gt;
+
+&lt;div data-bind="visible: hasName"&gt;
+  I am visible when hasName evaluates true
+&lt;/div&gt;
+
+&lt;span data-bind="css: { inStock: stockLevel() &gt; 0 }"&gt;&lt;/span&gt;
+
+&lt;ul data-bind="foreach: people"&gt;
+  &lt;li data-bind="text: firstName"&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+      <p>...and many more!</p>
+    </section>
+
+    <section class="slide code">
+      <h2>Two-Way Binding</h2>
+
+      <p>
+        Automatic synchronization of data between the model and view components
+      </p>
+
+      <pre><code data-language="javascript">var viewModel = {
+  firstName: ko.observable("Adam"),
+};
+ko.applyBindings(viewModel);</code></pre>
+
+      <pre><code data-language="html">&lt;input data-bind="value: firstName, valueUpdate: 'keyup'"&gt;
+&lt;span data-bind="text: firstName"&gt;&lt;/span&gt;</code></pre>
+
+      <iframe></iframe>
+    </section>
+
+    <section class="slide">
+      <h2>Bindings without Containers</h2>
+
+      <p class="slide">
+        Intialized by &lt;!-- ko binding: argument --&gt; and closed by &lt;!-- /ko --&gt;
+      </p>
+
+      <p class="slide">
+        Useful if you don't need a parent HTML element
+      </p>
+
+      <div class="slide">
+        <pre><code data-language="html">&lt;!-- ko foreach: pages --&gt;
+  &lt;!-- ko if: $root.page() == $data --&gt;
+  &lt;em class="current" data-bind="text: $data"&gt;&lt;/em&gt;
+  &lt;!-- /ko --&gt;
+
+  &lt;!-- ko ifnot: $root.page() == $data --&gt;
+  &lt;a data-bind="text: $data, click: $root.page"&gt;&lt;/a&gt;
+  &lt;!-- /ko --&gt;
+&lt;!-- /ko --&gt;</code></pre>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h2>Computed Observables</h2>
+
+      <div class="slide">
+        <p>
+          Functions that automatically update when their dependencies change.
+        </p>
+
+        <pre><code data-language="javascript">this.fullName = ko.computed(function() {
+  return this.firstName() + " " + this.lastName();
+}, this);</code></pre>
+      </div>
+
+      <h3 class="slide">
+        Some of my use cases
+      </h3>
+
+      <div class="slide">
+        <strong>Updating window location in Single Page Apps</strong>
+        <pre><code data-language="javascript">ko.computed(function() {
+  var params = { page: this.currentPage() };    // Our dependency(s)
+  uri.fragment(params);                         // uri is provided by URI.js
+  window.location = uri.toString();
+}, this);</code></pre>
+      </div>
+
+      <div class="slide">
+        <strong>Automatically fetching search result JSON data</strong>
+        <pre><code data-language="javascript">ko.computed(function() {
+  $.getJSON(window.location.href, { category: this.category() });
+}, this).extend({ throttle: 500 });</code></pre>
+      </div>
+    </section>
+
+    <section class="slide">
+      <h1>Use Cases</h1>
+    </section>
+
+    <section class="slide">
+      <h2>Search Form</h2>
+      <pre><code data-language="javascript">function viewModel() {
+    this.movies = ["Back to the Future", "Ghostbusters", "Caddyshack", "The Phantom"];
+
+    this.filter = ko.observable(""),
+
+    this.filteredMovies = ko.computed(function () {
+        var filter = this.filter().toLowerCase();
+
+        if (!filter) {
+            return this.movies;
+        } else {
+            return ko.utils.arrayFilter(this.movies, function (movie) {
+                return movie.toLowerCase().indexOf(filter) !== -1;
+            });
+        }
+    }, this);
+};
+ko.applyBindings(new viewModel());</code></pre>
+
+      <pre><code data-language="html">&lt;input data-bind="value: filter, valueUpdate: 'keyup'"&gt;
+&lt;ul data-bind="foreach: filteredMovies"&gt;
+  &lt;li data-bind="text: $data"&gt;&lt;/li&gt;
+&lt;ul&gt;</code></pre>
+    </section>
+
+    <section class="slide code">
+      <h2>Search Form Demo</h2>
+
+      <pre class="hide"><code data-language="javascript">function viewModel() {
+    this.movies = ["Back to the Future", "Ghostbusters", "Caddyshack", "The Phantom"];
+
+    this.filter = ko.observable(""),
+
+    this.filteredMovies = ko.computed(function () {
+        var filter = this.filter().toLowerCase();
+
+        if (!filter) {
+            return this.movies;
+        } else {
+            return ko.utils.arrayFilter(this.movies, function (movie) {
+                return movie.toLowerCase().indexOf(filter) !== -1;
+            });
+        }
+    }, this);
+};
+ko.applyBindings(new viewModel());</code></pre>
+
+      <pre class="hide"><code data-language="html">&lt;input data-bind="value: filter, valueUpdate: 'keyup'"&gt;
+&lt;ul data-bind="foreach: filteredMovies"&gt;
+  &lt;li data-bind="text: $data"&gt;&lt;/li&gt;
+&lt;ul&gt;</code></pre>
+
+      <iframe style="height: 20em;"></iframe>
+    </section>
+
+    </section>
+
+    <section class="slide">
+      <h2>Todo List</h2>
+
+      <pre><code data-language="javascript">function Task(title) {
+  this.title = ko.observable(title);
+  this.completed = ko.observable(false);
+
+  this.toggleCompleted = function() {
+    this.completed(! this.completed());
+  };
+};
+
+function ViewModel() {
+  this.tasks = ko.observableArray();
+  this.currentTask = ko.observable();
+
+  this.addTask = function() {
+    this.tasks.push(new Task(this.currentTask()))
+    this.currentTask("");
+  }.bind(this);
+
+  this.tasks.push(new Task("Drink beer"));
+  this.tasks.push(new Task("Write code"));
+};
+ko.applyBindings(new ViewModel());</code></pre>
+
+      <pre><code data-language="html">
+&lt;ul data-bind="foreach: tasks"&gt;
+  &lt;li data-bind="text: title, click: toggleCompleted, css: { completed: completed }"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;form data-bind="submit: addTask"&gt;
+  &lt;input data-bind="value: currentTask"&gt;
+&lt;/form&gt;
+      </code></pre>
+    </section>
+
+    <section class="slide code">
+      <h2>Todo List Demo</h2>
+
+      <pre class="hide"><code data-language="css">
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  cursor: pointer;
+  margin: 0.5em 0.5em 0.5em 0;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+      </code></pre>
+
+      <pre class="hide"><code data-language="javascript">function Task(title) {
+  this.title = ko.observable(title);
+  this.completed = ko.observable(false);
+
+  this.toggleCompleted = function() {
+    this.completed(! this.completed());
+  };
+};
+
+function ViewModel() {
+  this.tasks = ko.observableArray();
+  this.currentTask = ko.observable();
+
+  this.addTask = function() {
+    this.tasks.push(new Task(this.currentTask()))
+    this.currentTask("");
+  }.bind(this);
+
+  this.tasks.push(new Task("Drink beer"));
+  this.tasks.push(new Task("Write code"));
+};
+ko.applyBindings(new ViewModel());</code></pre>
+
+      <pre class="hide"><code data-language="html">
+&lt;ul data-bind="foreach: tasks"&gt;
+  &lt;li data-bind="text: title, click: toggleCompleted, css: { completed: completed }"&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;form data-bind="submit: addTask"&gt;
+  &lt;input data-bind="value: currentTask"&gt;
+&lt;/form&gt;
+      </code></pre>
+
+      <iframe style="height: 20em;"></iframe>
+    </section>
+
+    <section class="slide">
+      <h2>More Information</h2>
+
+      <dl>
+        <dt>KnockoutJS</dt>
+        <dd><a href="http://knockoutjs.com" target="_new">knockoutjs.com</a></dd>
+
+        <dt>MVVM</dt>
+        <dd><a href="http://en.wikipedia.org/wiki/Model_View_ViewModel" target="_new">Model View ViewModel (Wikipedia)</a></dd>
+      </dl>
+    </section>
+
+
+    <section class="slide">
+      <h2>Thank You</h2>
+
+      <dl>
+        <dt>Github</dt>
+        <dd><a href="http://github.com/adam12">github.com/adam12</a></dd>
+
+        <dt>Twitter</dt>
+        <dd><a href="http://twitter.com/adamrdaniels">@adamrdaniels</a></dd>
+
+        <dt>Sourcecode</dt>
+        <dd><a href="http://github.com/adam12/knockoutjs-devtricks-2014">github.com/adam12/knockoutjs-devtricks-2014</a></dd>
+      </dl>
+    </section>
+
+    <!-- End slides. -->
+
+    <!-- Begin extension snippets. Add or remove as needed. -->
+
+    <!-- deck.navigation snippet -->
+    <div aria-role="navigation">
+      <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+      <a href="#" class="deck-next-link" title="Next">&#8594;</a>
+    </div>
+
+    <!-- deck.status snippet -->
+    <p class="deck-status" aria-role="status">
+      <span class="deck-status-current"></span>
+      /
+      <span class="deck-status-total"></span>
+    </p>
+
+    <!-- deck.goto snippet -->
+    <form action="." method="get" class="goto-form">
+      <label for="goto-slide">Go to slide:</label>
+      <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+      <datalist id="goto-datalist"></datalist>
+      <input type="submit" value="Go">
+    </form>
+
+    <!-- End extension snippets. -->
+  </div>
+
+<!-- Required JS files. -->
+<script src="jquery.min.js"></script>
+<script src="core/deck.core.js"></script>
+
+<!-- Extension JS files. Add or remove as needed. -->
+<script src="extensions/menu/deck.menu.js"></script>
+<script src="extensions/goto/deck.goto.js"></script>
+<script src="extensions/status/deck.status.js"></script>
+<script src="extensions/navigation/deck.navigation.js"></script>
+<script src="extensions/scale/deck.scale.js"></script>
+
+<script src="rainbow/rainbow-custom.min.js"></script>
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+
+  $(function() {
+    $.deck('.slide');
+
+    /* For each slide, setup the interactive code demo if required */
+    $('.slide.code').each(function() {
+      var codeSetup = $(document).find('#code-setup').text();
+      var javascript = $(this).find('[data-language="javascript"]').text();
+      var html = $(this).find('[data-language="html"]').text();
+      var css = $(this).find('[data-language="css"]').text();
+
+      if (typeof javascript !== "undefined" && typeof html !== "undefined") {
+        var contents = codeSetup + '<style>' + css + '<\/style>' + html + '<script>' + javascript + '<\/script>';
+        var iframe = $(this).find('iframe').get(0);
+        iframe.srcdoc = contents;
+      }
+    });
+  });
+</script>
+</body>
+</html>
