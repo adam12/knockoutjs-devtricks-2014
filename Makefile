@@ -10,3 +10,6 @@ force:
 
 watch:
 	sass --watch  ${SASSOPTS} .
+
+serve:
+	python -m SimpleHTTPServer
